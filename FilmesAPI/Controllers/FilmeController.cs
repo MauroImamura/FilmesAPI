@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using FilmesAPI.Data;
-using FilmesAPI.Data.Dtos;
-using FilmesAPI.Models;
+using FilmesApi.Data;
+using FilmesApi.Data.Dtos;
+using FilmesApi.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace FilmesAPI.Controllers;
+namespace FilmesApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -46,9 +46,15 @@ public class FilmeController : ControllerBase
     /// <response code="200">Retorna a lista de filmes no banco ou lista vazia caso não exista nenhum registro</response>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IEnumerable<ReadFilmeDto> RecuperaFilmes([FromQuery] int skip=0, [FromQuery] int take=10)
+    public IEnumerable<ReadFilmeDto> RecuperaFilmes([FromQuery] int skip=0, [FromQuery] int take=10, [FromQuery]string? nomeCinema = null)
     {
-        return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take));
+        if(nomeCinema is null) return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take).ToList());
+
+        return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes
+            .Skip(skip).Take(take)
+            .Where(f => f.Sessoes
+                .Any(s => s.Cinema.Nome == nomeCinema))
+            .ToList());
     }
 
     /// <summary>

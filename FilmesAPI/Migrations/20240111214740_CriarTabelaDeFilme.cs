@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FilmesAPI.Migrations;
+namespace FilmesApi.Migrations;
 
 public partial class CriarTabelaDeFilme : Migration
 {

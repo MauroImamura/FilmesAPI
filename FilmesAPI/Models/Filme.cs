@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FilmesAPI.Models;
+namespace FilmesApi.Models;
 
 public class Filme
 {
@@ -19,4 +19,6 @@ public class Filme
     [Required(ErrorMessage = "A duração é obrigatória.")]
     [Range(1,300, ErrorMessage = "A duração deve estar entre 1 e 300 minutos.")]
     public int Duracao { get; set; }
+
+    public virtual ICollection<Sessao> Sessoes { get; set; }
 }
